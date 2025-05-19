@@ -12,8 +12,8 @@ public interface CreditService {
     List<CreditDTO> getAllCredits();
     CreditDTO updateCredit(Long id, CreditDTO creditDTO);
     void deleteCredit(Long id);
-    List<CreditDTO> getCreditsByStatus(StatutCredit statut);
-    CreditDTO changeCreditStatus(Long id, StatutCredit newStatus);
+
+    List<CreditDTO> getCreditsById(Long clientId);
+
     List<RemboursementDTO> getCreditRemboursements(Long creditId);
-    Double calculateTotalRemboursements(Long creditId);
 }

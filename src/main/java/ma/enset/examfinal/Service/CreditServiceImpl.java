@@ -2,11 +2,7 @@ package ma.enset.examfinal.Service;
 
 import jakarta.transaction.Transactional;
 import ma.enset.examfinal.Dto.*;
-import ma.enset.examfinal.Entities.Credit;
-import ma.enset.examfinal.Entities.CreditImmobilier;
-import ma.enset.examfinal.Entities.CreditPersonnel;
-import ma.enset.examfinal.Entities.CreditProfessionnel;
-import ma.enset.examfinal.Enums.StatutCredit;
+import ma.enset.examfinal.Entities.*;
 import ma.enset.examfinal.Mappers.CreditMapper;
 import ma.enset.examfinal.Mappers.RemboursementMapper;
 import ma.enset.examfinal.Repositories.CreditRepository;
@@ -14,7 +10,6 @@ import ma.enset.examfinal.Repositories.RemboursementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,36 +82,19 @@ public class CreditServiceImpl implements CreditService {
     }
 
     @Override
-    public List<CreditDTO> getCreditsByStatus(StatutCredit statut) {
-        return creditRepository.findByStatut(statut).stream()
+    public List<CreditDTO> getCreditsById(Long clientId) {
+        List<Credit> credits = creditRepository.findByClientId(clientId); // Explicit List
+        return credits.stream()
                 .map(creditMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CreditDTO changeCreditStatus(Long id, StatutCredit newStatus) {
-        Credit credit = creditRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Credit not found"));
-
-        credit.setStatut(newStatus);
-        if (newStatus == StatutCredit.ACCEPTE) {
-            credit.setDateAcception(LocalDate.now());
-        }
-
-        Credit updatedCredit = creditRepository.save(credit);
-        return creditMapper.toDto(updatedCredit);
-    }
-
-    @Override
     public List<RemboursementDTO> getCreditRemboursements(Long creditId) {
-        return remboursementRepository.findByCreditId(creditId).stream()
+        List<Remboursement> remboursements= remboursementRepository.findByCreditId(creditId);
+        return remboursements.stream()
                 .map(remboursementMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public Double calculateTotalRemboursements(Long creditId) {
-        Double total = remboursementRepository.calculateTotalRemboursementByCreditId(creditId);
-        return total != null ? total : 0.0;
-    }
 }

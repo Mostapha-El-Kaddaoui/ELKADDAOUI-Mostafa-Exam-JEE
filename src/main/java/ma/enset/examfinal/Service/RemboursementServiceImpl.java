@@ -69,7 +69,8 @@ public class RemboursementServiceImpl implements RemboursementService {
 
     @Override
     public List<RemboursementDTO> getRemboursementsByType(TypeRemboursement type) {
-        return remboursementRepository.findByType(type).stream()
+        List<Remboursement> remboursements = remboursementRepository.findByType(type);
+        return remboursements.stream()
                 .map(remboursementMapper::toDto)
                 .collect(Collectors.toList());
     }

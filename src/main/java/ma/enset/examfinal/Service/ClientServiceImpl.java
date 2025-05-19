@@ -67,10 +67,4 @@ public class ClientServiceImpl implements ClientService {
         clientRepository.deleteById(id);
     }
 
-    @Override
-    public List<CreditDTO> getClientCredits(Long clientId) {
-        return creditRepository.findByClientId(clientId).stream()
-                .map(creditMapper::toDto)
-                .collect(Collectors.toList());
-    }
 }
