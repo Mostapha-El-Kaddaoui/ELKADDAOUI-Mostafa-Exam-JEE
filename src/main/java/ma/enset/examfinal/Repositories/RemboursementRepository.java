@@ -11,7 +11,5 @@ import java.util.List;
 public interface RemboursementRepository extends JpaRepository<Remboursement, Long> {
     List<Remboursement> findByCreditId(Long creditId);
 
-    Double calculateTotalRemboursementByCreditId(Long creditId);
-
     List<Remboursement> findByType(TypeRemboursement type);
 }
